@@ -25,6 +25,7 @@ public class TicketManagerTest {
     private static Ticket third = new Ticket(3, 3210, VKO, EGO, 110);
     private static Ticket fourth = new Ticket(4, 1234, DME, LED, 95);
     private static Ticket fifth = new Ticket(5, 9890, VKO, ACP, 150);
+    private static Ticket sixth = new Ticket(6, 3345, LED, ACP, 112);
 
     @BeforeAll
     static void setUp() {
@@ -33,31 +34,32 @@ public class TicketManagerTest {
         repository.save(third);
         repository.save(fourth);
         repository.save(fifth);
+        repository.save(sixth);
     }
 
     @Test
     public void findOffer() {
-        Ticket[] expected = new Ticket[]{fourth};
-        assertArrayEquals(expected, manager.findAll("Домодедово", "Пулково"));
+        Ticket[] expected = new Ticket[]{second, sixth};
+        assertArrayEquals(expected, manager.findAll("Пулково", "Астрахань", Ticket::compareTo));
     }
 
     @Test
     public void showAllOffers() {
-        Ticket[] expected = new Ticket[]{fourth, second, third, first, fifth};
+        Ticket[] expected = new Ticket[]{fourth, second, third, sixth, first, fifth};
         assertArrayEquals(expected, manager.findAllOffers());
     }
 
     @Test
     void searchBy() {
         Ticket[] expected = new Ticket[]{};
-        Ticket[] actual = manager.findAll("", "");
+        Ticket[] actual = manager.findAll("", "", Ticket::compareTo);
         assertArrayEquals(expected, actual);
     }
 
     @Test
     public void addNotExistingTicket() {
         Assertions.assertThrows(NotFoundException.class, () -> {
-            repository.removeById(6);
+            repository.removeById(7);
         });
     }
 
