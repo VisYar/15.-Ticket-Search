@@ -1,5 +1,7 @@
 package ru.netology.repository;
 
+import ru.netology.exception.AlreadyExistsException;
+import ru.netology.exception.NotFoundException;
 import ru.netology.product.Ticket;
 
 public class TicketRepository {

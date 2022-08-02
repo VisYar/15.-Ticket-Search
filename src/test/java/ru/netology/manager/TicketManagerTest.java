@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.netology.product.Ticket;
-import ru.netology.repository.AlreadyExistsException;
-import ru.netology.repository.NotFoundException;
+import ru.netology.exception.AlreadyExistsException;
+import ru.netology.exception.NotFoundException;
 import ru.netology.repository.TicketRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,13 +19,16 @@ public class TicketManagerTest {
     private static final String LED = "Пулково";
     private static final String VKO = "Внуково";
     private static final String ACP = "Астрахань";
+    private static final String SIP = "Симферополь";
+    private static final String BKA = "Быково";
 
-    private static Ticket first = new Ticket(1, 6543, DME, EGO, 115);
+    private static Ticket first = new Ticket(1, 6543, DME, SIP, 115);
     private static Ticket second = new Ticket(2, 2345, LED, ACP, 100);
     private static Ticket third = new Ticket(3, 3210, VKO, EGO, 110);
     private static Ticket fourth = new Ticket(4, 1234, DME, LED, 95);
-    private static Ticket fifth = new Ticket(5, 9890, VKO, ACP, 150);
-    private static Ticket sixth = new Ticket(6, 3345, LED, ACP, 112);
+    private static Ticket fifth = new Ticket(5, 9890, BKA, ACP, 150);
+    private static Ticket sixth = new Ticket(6, 4890, EGO, LED, 130);
+    private static Ticket seventh = new Ticket(7, 2340, LED, ACP, 100);
 
     @BeforeAll
     static void setUp() {
@@ -39,7 +42,7 @@ public class TicketManagerTest {
 
     @Test
     public void findOffer() {
-        Ticket[] expected = new Ticket[]{second, sixth};
+        Ticket[] expected = new Ticket[]{second, seventh};
         assertArrayEquals(expected, manager.findAll("Пулково", "Астрахань", Ticket::compareTo));
     }
 
@@ -70,5 +73,47 @@ public class TicketManagerTest {
         });
     }
 
+    @Test
+    void searchByFrom() {
+        Ticket[] expected = new Ticket[]{};
+        Ticket[] actual = manager.findAll("Пулково", "", Ticket::compareTo);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchByFromOf() {
+        Ticket[] expected = new Ticket[]{};
+        Ticket[] actual = manager.findAll("<Быково>", "Симферополь", Ticket::compareTo);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchByOf() {
+        Ticket[] expected = new Ticket[]{};
+        Ticket[] actual = manager.findAll("", "Симферополь", Ticket::compareTo);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchByOfFrom() {
+        Ticket[] expected = new Ticket[]{fifth};
+        Ticket[] actual = manager.findAll("Быково", "Астрахань", Ticket::compareTo);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchByNot() {
+        Ticket[] expected = new Ticket[]{};
+        Ticket[] actual = manager.findAll("Быково", "Пулково", Ticket::compareTo);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchByAll() {
+        repository.save(seventh);
+        Ticket[] expected = new Ticket[]{second, seventh};
+        Ticket[] actual = manager.findAll("Пулково", "Астрахань", Ticket::compareTo);
+        assertArrayEquals(expected, actual);
+    }
 
 }

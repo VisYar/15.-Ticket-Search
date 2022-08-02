@@ -1,4 +1,4 @@
-package ru.netology.repository;
+package ru.netology.exception;
 
 public class AlreadyExistsException extends RuntimeException {
 

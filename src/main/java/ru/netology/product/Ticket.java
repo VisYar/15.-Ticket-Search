@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class Ticket implements Comparable<Ticket> {
-    private int id;
-    private double price;
-    private String airportFrom;
-    private String airportTo;
-    private int time;
+    protected int id;
+    protected double price;
+    protected String airportFrom;
+    protected String airportTo;
+    protected int time;
 
     public int getId() {
         return id;
