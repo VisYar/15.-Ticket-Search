@@ -5,8 +5,6 @@ import ru.netology.repository.TicketRepository;
 
 import java.util.Arrays;
 
-import static java.lang.System.*;
-
 public class TicketManager {
     TicketRepository repository;
 
@@ -14,19 +12,27 @@ public class TicketManager {
         this.repository = repository;
     }
 
-    public Ticket[] findAll(String from, String to) {
+    public Ticket[] findAll(String airportFrom, String airportTo) {
         Ticket[] result = new Ticket[0];
         for (Ticket ticket : repository.getAll()) {
-            Ticket[] tmp = new Ticket[result.length + 1];
-            if (ticket.getFrom().equalsIgnoreCase(from) && ticket.getTo().equalsIgnoreCase(to)) {
-                arraycopy(result, 0, tmp, 0, result.length);
-                int lastIndex = tmp.length - 1;
-                tmp[lastIndex] = ticket;
+            if (matches(ticket, airportFrom, airportTo)) {
+                Ticket[] tmp = new Ticket[result.length + 1];
+                System.arraycopy(result, 0, tmp, 0, result.length);
+                tmp[tmp.length - 1] = ticket;
                 result = tmp;
+                Arrays.sort(result);
             }
         }
-        Arrays.sort(result);
         return result;
+    }
+
+    public boolean matches(Ticket ticket, String airportFrom, String airportTo) {
+
+        if (ticket.getAirportFrom().contains(airportFrom)) {
+            return ticket.getAirportTo().contains(airportTo);
+        }
+
+        return false;
     }
 
     public Ticket[] findAllOffers() {

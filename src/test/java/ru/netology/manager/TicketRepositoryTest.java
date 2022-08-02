@@ -1,8 +1,9 @@
-package ru.netology.repository;
+package ru.netology.manager;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.netology.product.Ticket;
+import ru.netology.repository.TicketRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 

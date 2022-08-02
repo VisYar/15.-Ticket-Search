@@ -1,13 +1,15 @@
 package ru.netology.repository;
 
+import ru.netology.exception.AlreadyExistsException;
+import ru.netology.exception.NotFoundException;
 import ru.netology.product.Ticket;
 
 public class TicketRepository {
     private Ticket[] items = new Ticket[0];
 
     public void removeById(int id) {
-        Ticket draft_1 = findById(id);
-        if (draft_1 == null) {
+        Ticket ticket = findById(id);
+        if (ticket == null) {
             throw new NotFoundException("Element with id: " + id + " not found");
         }
         Ticket[] tmp = new Ticket[items.length - 1];
@@ -22,8 +24,8 @@ public class TicketRepository {
     }
 
     public void save(Ticket addTicket) {
-        Ticket draft_2 = findById(addTicket.getId());
-        if (draft_2 != null) {
+        Ticket ticket = findById(addTicket.getId());
+        if (ticket != null) {
             throw new AlreadyExistsException("Element with id: " + addTicket.getId() + " already exists");
         }
         Ticket[] tmp = new Ticket[items.length + 1];

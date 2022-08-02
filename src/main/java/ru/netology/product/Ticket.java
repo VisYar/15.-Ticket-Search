@@ -1,29 +1,30 @@
 package ru.netology.product;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-
 public class Ticket implements Comparable<Ticket> {
-    private int id;
-    private double price;
-    private String airportFrom;
-    private String airportTo;
-    private int time;
+
+    protected int id;
+    protected int price;
+    protected String airportFrom;
+    protected String airportTo;
+    protected int time;
+
+    public Ticket(int id, int price, String airportFrom, String airportTo, int travelTime) {
+        this.id = id;
+        this.price = price;
+        this.airportFrom = airportFrom;
+        this.airportTo = airportTo;
+        this.time = travelTime;
+    }
 
     public int getId() {
         return id;
     }
 
-    public String getFrom() {
+    public String getAirportFrom() {
         return airportFrom;
     }
 
-    public String getTo() {
+    public String getAirportTo() {
         return airportTo;
     }
 
