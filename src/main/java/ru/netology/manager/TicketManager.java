@@ -6,7 +6,7 @@ import ru.netology.repository.TicketRepository;
 import java.util.Arrays;
 
 public class TicketManager {
-    TicketRepository repository;
+    private final TicketRepository repository;
 
     public TicketManager(TicketRepository repository) {
         this.repository = repository;
@@ -20,18 +20,16 @@ public class TicketManager {
                 System.arraycopy(result, 0, tmp, 0, result.length);
                 tmp[tmp.length - 1] = ticket;
                 result = tmp;
-                Arrays.sort(result);
             }
         }
+        Arrays.sort(result);
         return result;
     }
 
     public boolean matches(Ticket ticket, String airportFrom, String airportTo) {
-
         if (ticket.getAirportFrom().contains(airportFrom)) {
             return ticket.getAirportTo().contains(airportTo);
         }
-
         return false;
     }
 
